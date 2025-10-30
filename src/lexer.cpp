@@ -29,7 +29,6 @@ void Lexer::skipWhitespace() {
 Token Lexer::makeToken(TokenType type, std::optional<std::string> value) {
     return Token{ type, value };
 }
-
 Token Lexer::nextToken() {
     skipWhitespace();
     char curr = peek();
@@ -38,13 +37,16 @@ Token Lexer::nextToken() {
         return makeToken(E_O_F);
 
     switch (curr) {
-
-        case '=': advance(); return makeToken(EQUAL);
-        case ';': advance(); return makeToken(SEM);
-        case '+': advance(); return makeToken(ADD);
-        case '-': advance(); return makeToken(SUB);
-        case '*': advance(); return makeToken(MUL);
-        case '/': advance(); return makeToken(DIV);
+        case '=': advance(); return makeToken(ASSIGN);
+        case '+': advance(); return makeToken(PLUS);
+        case '*': advance(); return makeToken(STAR);
+        case '/': advance(); return makeToken(SLASH);
+        case ',': advance(); return makeToken(COMMA);
+        case ';': advance(); return makeToken(SEMICOLON);
+        case '(': advance(); return makeToken(LPAREN);
+        case ')': advance(); return makeToken(RPAREN);
+        case '{': advance(); return makeToken(LSQUIRLY);
+        case '}': advance(); return makeToken(RSQUIRLY);
     }
 
     if (std::isdigit(curr)) {
@@ -54,16 +56,18 @@ Token Lexer::nextToken() {
     }
 
     if (std::isalpha(curr) || curr == '_') {
-        std::string word;
+        std::string ident;
         while (std::isalnum(peek()) || peek() == '_')
-            word += advance();
+            ident += advance();
 
-        if (word == "return") return makeToken(RETURN);
-        return makeToken(UNK, word);
+        if (ident == "function") return makeToken(FUNCTION);
+        if (ident == "let") return makeToken(LET);
+        return makeToken(IDENT, ident);
     }
 
     // Unknown character
     advance();
     std::string unknown(1, curr);
-    return makeToken(UNK, unknown);
+    return makeToken(ILLEGAL, unknown);
 }
+

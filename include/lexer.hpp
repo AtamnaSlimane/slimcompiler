@@ -3,16 +3,22 @@
 #include <string>
 #include <vector>
 enum TokenType {
- RETURN,
- INT_LIT,
- SEM,
- E_O_F,
- ADD,
- SUB,
- MUL,
- DIV,
- EQUAL,
- UNK
+    ILLEGAL,
+    E_O_F,
+    IDENT,
+    INT_LIT,
+    ASSIGN,
+    PLUS,
+    STAR,
+    SLASH,
+    COMMA,
+    SEMICOLON,
+    LPAREN,
+    RPAREN,
+    LSQUIRLY,
+    RSQUIRLY,
+    FUNCTION,
+    LET
 };
 struct Token {
   TokenType type;
